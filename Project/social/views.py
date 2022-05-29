@@ -1,9 +1,20 @@
 from multiprocessing import context
+from .forms import PostForm
 from django.shortcuts import render
 from .models import Profile
+from django.shortcuts import render, redirect
 
 def base(request):
-    return render(request, "dashboard.html")
+    if request.method == "POST":
+        form = PostForm(request.POST or None)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect("social:base")
+    form = PostForm()
+    context = {"form": form}
+    return render(request, "dashboard.html", context)
 
 def profilelist(request):
     profiles = Profile.objects.exclude(user=request.user)
