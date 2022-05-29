@@ -1,7 +1,7 @@
 from multiprocessing import context
 from .forms import PostForm
 from django.shortcuts import render
-from .models import Profile
+from .models import Post, Profile
 from django.shortcuts import render, redirect
 
 def base(request):
@@ -12,9 +12,15 @@ def base(request):
             post.user = request.user
             post.save()
             return redirect("social:base")
+    followed_posts = Post.objects.filter(
+        user__profile__in=request.user.profile.follows.all()
+    ).order_by("-created_at")
+            
     form = PostForm()
-    context = {"form": form}
+    context = {"form": form,
+    "posts": followed_posts}
     return render(request, "dashboard.html", context)
+    
 
 def profilelist(request):
     profiles = Profile.objects.exclude(user=request.user)
