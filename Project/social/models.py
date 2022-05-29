@@ -25,7 +25,7 @@ def create_profile(sender, instance, created, **kwargs):
 
 class Post(models.Model):
     user = models.ForeignKey(
-        User, related_name="dweets", on_delete=models.DO_NOTHING
+        User, related_name="posts", on_delete=models.DO_NOTHING
     )
     body = models.CharField(max_length=140)
     created_at = models.DateTimeField(auto_now_add=True)

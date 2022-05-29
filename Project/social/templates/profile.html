@@ -22,11 +22,11 @@
         </div>
     </form>
     <div class="content">
-        {% for dweet in profile.user.dweets.all %}
+        {% for post in profile.user.posts.all %}
             <div class="box">
-                {{ dweet.body }}
+                {{ post.body }}
                 <span class="is-small has-text-grey-light">
-                    ({{ dweet.created_at }})
+                    ({{ post.created_at }})
                 </span>
             </div>
         {% endfor %}
